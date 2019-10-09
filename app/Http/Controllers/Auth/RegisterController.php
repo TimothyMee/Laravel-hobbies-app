@@ -52,7 +52,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'mobile' => ['required', 'string', 'min:11', 'max:11', 'unique:users'],
+            'phone_number' => ['required', 'string', 'min:11', 'max:11', 'unique:users'],
         ]);
     }
 
@@ -64,11 +64,14 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $newUser = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'mobile' => preg_replace('/\s+/', '', $data['mobile']),
+            'phone_number' => "+234" . preg_replace('/\s+/', '', $data['mobile']),
         ]);
+
+        $newUser->notify(new SMSNotification());
+        return $newUser;
     }
 }
