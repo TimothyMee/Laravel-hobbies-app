@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\SMSNotification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Notification;
 
 class RegisterController extends Controller
 {
@@ -53,7 +54,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'phone_number' => ['required', 'string', 'min:11', 'max:11', 'unique:users'],
+            'phone_number' => ['required', 'string', 'min:10', 'max:10', 'unique:users'],
         ]);
     }
 
@@ -72,7 +73,8 @@ class RegisterController extends Controller
             'phone_number' => "+234" . preg_replace('/\s+/', '', $data['phone_number']),
         ]);
 
-        $newUser->notify(new SMSNotification());
+        // $newUser->notify(new SMSNotification());
+        // Notification::send($newUser, new SMSNotification());
         return $newUser;
     }
 }
