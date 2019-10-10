@@ -66,13 +66,18 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $newUser = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'phone_number' => "+234" . preg_replace('/\s+/', '', $data['phone_number']),
-        ]);
-        $newUser->notify(new ActionNotification($newUser));
-        return $newUser;
+        try {
+            $newUser = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'phone_number' => "+234" . preg_replace('/\s+/', '', $data['phone_number']),
+            ]);
+            try {
+                $newUser->notify(new ActionNotification($newUser));
+            } catch (\Exception $e) { }
+
+            return $newUser;
+        } catch (\Exception $ex) { }
     }
 }

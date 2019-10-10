@@ -48,9 +48,9 @@ class ActionNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -62,7 +62,7 @@ class ActionNotification extends Notification
     public function toNexmo($notifiable)
     {
         return (new NexmoMessage())
-                    ->content('Testing Nexmo SMS from laravel');
+            ->content('Testing Nexmo SMS from laravel');
     }
 
     /**
@@ -74,7 +74,8 @@ class ActionNotification extends Notification
     public function toSMS($notifiable)
     {
         return (new SMSMessage())
-                    ->content('Testing Smart web sms');
+            ->message('Testing Smart web sms')
+            ->to('+23408121581441');
     }
 
 

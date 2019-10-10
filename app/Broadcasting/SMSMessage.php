@@ -1,25 +1,33 @@
 <?php
 
 namespace App\Broadcasting;
+
 class SMSMessage
 {
 
-  public $content = "";
-
+    public $message = "";
+    public $to = "";
     /**
      * Create a new message instance.
      *
-     * @param  string  $content
+     * @param  string  $message
      * @return void
      */
-    public function __construct($content = '')
+    public function __construct($message = '', $to = '')
     {
-        $this->content = $content;
+        $this->message = $message;
+        $this->to = $to;
     }
 
-    public function content($content){
-        $this->content = $content;
+    public function message($message)
+    {
+        $this->message = $message;
         return $this;
     }
 
+    public function to($to)
+    {
+        $this->to = $to;
+        return $this;
+    }
 }
