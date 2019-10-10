@@ -2,11 +2,13 @@
 
 namespace App\Notifications;
 
+use App\Broadcasting\SMSChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Notifications\Notification;
+use App\Broadcasting\SMSMessage;
 
 class ActionNotification extends Notification
 {
@@ -30,7 +32,11 @@ class ActionNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail', 'nexmo'];
+        //To use the laravel official nexmo option uncomment return code below
+        // return ['mail', 'nexmo'];
+
+        //To use the smartweb sms option uncomment the return code below
+        return ['mail', SMSChannel::class];
     }
 
     /**
@@ -58,6 +64,19 @@ class ActionNotification extends Notification
         return (new NexmoMessage())
                     ->content('Testing Nexmo SMS from laravel');
     }
+
+    /**
+     * Get the SMS representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\SMSMessage
+     */
+    public function toSMS($notifiable)
+    {
+        return (new SMSMessage())
+                    ->content('Testing Smart web sms');
+    }
+
 
     /**
      * Get the array representation of the notification.
