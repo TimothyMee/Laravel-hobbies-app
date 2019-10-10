@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Notifications\SMSNotification;
+use App\Notifications\ActionNotification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Notification;
@@ -72,9 +72,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'phone_number' => "+234" . preg_replace('/\s+/', '', $data['phone_number']),
         ]);
-
-        // $newUser->notify(new SMSNotification());
-        // Notification::send($newUser, new SMSNotification());
+        $newUser->notify(new ActionNotification($newUser));
         return $newUser;
     }
 }

@@ -17,8 +17,8 @@ class CreateHobbiesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->string('name');
-            $table->int('category');
-            $table->string('description');
+            $table->integer('category');
+            $table->text('description');
             $table->softDeletes();
             $table->timestamps();
         });
