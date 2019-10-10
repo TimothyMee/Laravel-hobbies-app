@@ -55,7 +55,7 @@ class HobbyController extends Controller
         }
     }
 
-    public function deletehobby(Request $request, Hobby $hobby)
+    public function deleteHobby(Request $request, Hobby $hobby)
     {
         try {
             $data = $request->all();

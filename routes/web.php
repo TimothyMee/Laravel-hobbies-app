@@ -17,4 +17,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::group(['prefix' => 'hobby', 'middleware' => 'auth'], function () {
+    Route::post('/create', 'HobbyController@createNew');
+    Route::get('/get', 'HobbyController@getAll');
+    Route::get('/get-one', 'HobbyController@get');
+    Route::put('/update', 'HobbyController@updateHobby');
+    Route::delete('/delete', 'HobbyController@deleteHobby');
+});
 Route::get('/home', 'HomeController@index')->name('home');
