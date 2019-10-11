@@ -27,7 +27,7 @@ After cloning the repository, Run:
 All contributions are welcomed and can be made in form of pull requests
 
 # Security Vulnerabilities
-If you discover a security vulnerability within RMS, please send an e-mail to Fadayini Timothy at timothy33.tf@gmail.com 
+If you discover a security vulnerability within Laravel-Hobbies, please send an e-mail to Fadayini Timothy at timothy33.tf@gmail.com 
 
 # License
 Laravel-Hobbies test app is open-sourced software licensed under the MIT license.
