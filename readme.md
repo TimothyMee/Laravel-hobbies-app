@@ -14,6 +14,20 @@ After cloning the repository, Run:
 	DB_USERNAME=
     	
 	DB_PASSWORD=
+    
+    NEXMO_KEY=
+    
+    NEXMO_SECRET=
+
+    NEXMO_FROM=
+
+    SMS_TOKEN=
+
+    SMS_SENDER_ID=
+
+    SMS_ROUTING=
+
+    SMS_TYPE=        
 
 4. Run php artisan migrate
 6. Run npm install
