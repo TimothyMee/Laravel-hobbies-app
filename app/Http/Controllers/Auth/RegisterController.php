@@ -78,7 +78,7 @@ class RegisterController extends Controller
                 $newUser->notify(new ActionNotification($newUser, $message, $message));
             } catch (\Exception $e) {
                 // dd($e);
-             }
+            }
 
             return $newUser;
         } catch (\Exception $ex) { }

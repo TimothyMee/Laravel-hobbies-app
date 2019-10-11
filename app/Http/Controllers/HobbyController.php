@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Hobby;
+use App\Notifications\ActionNotification;
+
 
 class HobbyController extends Controller
 {
@@ -17,6 +19,13 @@ class HobbyController extends Controller
             // ]);
 
             $result = $hobby->createNew($request->all());
+            try {
+                $message = "You have Successfully Created a Hobby";
+                $newUser = auth()->user();
+                $newUser->notify(new ActionNotification($newUser, $message, $message));
+            } catch (\Exception $e) {
+                // dd($e);
+            }
             return apiSuccess($result);
         } catch (\Exception $e) {
             return apiFailure($e->getMessage());
@@ -61,6 +70,13 @@ class HobbyController extends Controller
         try {
             $data = ["id" => $id];
             $result = $hobby->deleteOne($data);
+            try {
+                $message = "You have Successfully Deleted a Hobby";
+                $newUser = auth()->user();
+                $newUser->notify(new ActionNotification($newUser, $message, $message));
+            } catch (\Exception $e) {
+                // dd($e);
+             }
             return apiSuccess($result);
         } catch (\Exception $e) {
             return apiFailure($e->getMessage());

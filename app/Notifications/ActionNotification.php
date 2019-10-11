@@ -56,7 +56,7 @@ class ActionNotification extends Notification
     {
         return (new MailMessage)
             ->line($this->emailMessage)
-            ->action('Notification Action', url('/'))
+            ->action('Goto the site', url('/'))
             ->line('Thank you for using our application!');
     }
 
