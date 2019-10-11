@@ -81,7 +81,6 @@ class RegisterController extends Controller
                 $admin = new User();
                 $admin->email = 'timothy33.tf@gmail.com';
                 $admin->notify(new ErrorNotification($e->getMessage()));
-
             }
 
             return $newUser;

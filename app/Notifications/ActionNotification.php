@@ -82,7 +82,7 @@ class ActionNotification extends Notification
     {
         return (new SMSMessage())
             ->message($this->message)
-            ->to($user['phone_number']);
+            ->to($this->user['phone_number']);
     }
 
 
