@@ -25,3 +25,4 @@ Route::group(['prefix' => 'hobby', 'middleware' => 'auth'], function () {
     Route::delete('/delete', 'HobbyController@deleteHobby');
 });
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/auth-user', 'HomeController@getauthuser');

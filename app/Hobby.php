@@ -48,7 +48,7 @@ class Hobby extends Model
         return $this->where('id', $data['id'])->delete();
     }
 
-    public function update($data)
+    public function updateOne($data)
     {
         return $this->where('id', $data['id'])
                     ->fill($data)

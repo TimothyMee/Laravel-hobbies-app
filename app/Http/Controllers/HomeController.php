@@ -25,4 +25,9 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function getauthuser()
+    {
+        return apiSuccess(json_encode(auth()->user()));
+    }
 }

@@ -11,7 +11,9 @@
                         {{ session('status') }}
                     </div>
                     @endif
-                    <hobby-component></hobby-component>
+                    <div>
+                        <hobby-component></hobby-component>
+                    </div>
                 </div>
             </div>
         </div>

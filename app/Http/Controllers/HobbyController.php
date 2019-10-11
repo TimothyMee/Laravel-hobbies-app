@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Hobby;
 use Illuminate\Http\Request;
+use App\Hobby;
 
 class HobbyController extends Controller
 {
@@ -23,9 +23,10 @@ class HobbyController extends Controller
         }
     }
 
-    public function getAll(Hobby $hobby)
+    public function getAll()
     {
         try {
+            $hobby = new Hobby();
             $results = $hobby->viewAll();
             return apiSuccess($results);
         } catch (\Exception $e) {
@@ -48,7 +49,7 @@ class HobbyController extends Controller
     {
         try {
             $data = $request->all();
-            $result = $hobby->update($data);
+            $result = $hobby->updateOne($data);
             return apiSuccess($result);
         } catch (\Exception $e) {
             return apiFailure($e->getMessage());
