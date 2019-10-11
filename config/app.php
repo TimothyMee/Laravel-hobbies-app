@@ -52,7 +52,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://calm-plains-09478.herokuapp.com/'),
+
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -119,7 +120,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY'),
+    'key' => env('APP_KEY', "acHucLwZ5Y0NVCCHoUfx6wWmSMrjraxrKAEL0UBctGw="),
 
     'cipher' => 'AES-256-CBC',
 
