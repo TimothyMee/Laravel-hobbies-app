@@ -22,7 +22,8 @@ Route::group(['prefix' => 'hobby', 'middleware' => 'auth'], function () {
     Route::get('/get', 'HobbyController@getAll');
     Route::get('/get-one', 'HobbyController@get');
     Route::put('/update', 'HobbyController@updateHobby');
-    Route::delete('/delete', 'HobbyController@deleteHobby');
+    Route::delete('/delete/{id}', 'HobbyController@deleteHobby');
+    Route::get('/categories', 'CategoryController@getAll');
 });
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/auth-user', 'HomeController@getauthuser');

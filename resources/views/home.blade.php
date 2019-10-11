@@ -12,7 +12,9 @@
                     </div>
                     @endif
                     <div>
-                        <hobby-component></hobby-component>
+                        <hobby-component>
+                            {{ csrf_field() }}
+                        </hobby-component>
                     </div>
                 </div>
             </div>

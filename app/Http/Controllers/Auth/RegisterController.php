@@ -74,8 +74,11 @@ class RegisterController extends Controller
                 'phone_number' => "+234" . preg_replace('/\s+/', '', $data['phone_number']),
             ]);
             try {
-                $newUser->notify(new ActionNotification($newUser));
-            } catch (\Exception $e) { }
+                $message = "You have Successfully Registered";
+                $newUser->notify(new ActionNotification($newUser, $message, $message));
+            } catch (\Exception $e) {
+                // dd($e);
+             }
 
             return $newUser;
         } catch (\Exception $ex) { }

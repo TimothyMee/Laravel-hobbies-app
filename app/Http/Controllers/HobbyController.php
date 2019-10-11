@@ -10,13 +10,13 @@ class HobbyController extends Controller
     public function createNew(Request $request, Hobby $hobby)
     {
         try {
-            $validatedData = $request->validate([
-                'name' => 'required',
-                'category' => 'required',
-                'description' => 'required'
-            ]);
+            // $validatedData = $request->validate([
+            //     'name' => 'required',
+            //     'category' => 'required',
+            //     'description' => 'required'
+            // ]);
 
-            $result = $hobby->createNew($validatedData);
+            $result = $hobby->createNew($request->all());
             return apiSuccess($result);
         } catch (\Exception $e) {
             return apiFailure($e->getMessage());
@@ -56,10 +56,10 @@ class HobbyController extends Controller
         }
     }
 
-    public function deleteHobby(Request $request, Hobby $hobby)
+    public function deleteHobby($id, Hobby $hobby)
     {
         try {
-            $data = $request->all();
+            $data = ["id" => $id];
             $result = $hobby->deleteOne($data);
             return apiSuccess($result);
         } catch (\Exception $e) {

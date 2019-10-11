@@ -7,13 +7,14 @@
                     <form>
                         <div class="form-group col-md-12">
                             <label>Name:</label>
-                            <input type="text" class="form-control form-control-xs" v-model="hobby.title">
+                            <input type="text" class="form-control form-control-xs" v-model="hobby.name">
                         </div>
 
                         <div class="form-group col-md-12">
                             <label>Category:</label>
                             <select v-model="hobby.category" class="form-control form-control-xs">
                                 <option value="" selected="selected">Select a category</option>
+                                <option v-for="category in categories" :value="category.id">{{category.name}}</option>
                             </select>
                         </div>
 
@@ -62,8 +63,7 @@
                                         <td>{{hobby.category.name}}</td>
                                         <td>{{hobby.description}}</td>
                                         <td>
-                                            <button v-if="book.author.id == user.id" class="icon text-danger btn btn-small" @click.prevent="deleteHobby(hobby)">delete</button>
-                                            <button v-if="book.author.id != user.id" class="icon text-danger btn btn-small" disabled @click.prevent="deleteHobby(hobby)">delete</button>
+                                            <button class="icon text-danger btn btn-small" @click.prevent="deleteHobby(hobby)">delete</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -80,6 +80,7 @@
 </template>
 <script>
 import {apiDomain} from '../env.js';
+import { async } from 'q';
 export default {
     data(){
         return {
@@ -87,13 +88,13 @@ export default {
             loading: false,
             viewallLoading: true,
             hobbies:[],
-            user:{}
+            user:{},
+            categories:[]
         }
     },
 
     methods:{
         saveHobby () {
-            alert("here");
             this.loading = true;
             console.log(this.hobby);
             axios.post(apiDomain + '/hobby/create', this.hobby).then(response => {
@@ -101,9 +102,9 @@ export default {
                 console.log("here", response);
                 if ($_response.status === 0) {
                     this.$notify({type: 'success', text: 'Hobby has been added successfully'});
-                    this.fetchAllBooks();
+                    this.fetchAllHobbies();
                 } else {
-                    this.$notify({type: 'error', text: 'Could not create hobby. Please try again'});
+                    // this.$notify({type: 'error', text: 'Could not create hobby. Please try again'});
                 }
                 this.loading = false;
             }).catch(error => {
@@ -111,54 +112,74 @@ export default {
                 this.$notify({type: 'error', text: 'Could not create hobby. Please try again'});
             })
         },
-        fetchAllHobbies() {
-            this.viewallLoading = true;
+        fetchAllHobbies: async function () {
+            // this.viewallLoading = true;
             axios.get(apiDomain + '/hobby/get').then(response => {
                 let $_response = response.data;
                 if ($_response.status === 0) {
                     this.hobbies = $_response.data;
-                    this.viewallLoading = false;
+                    console.log(this.hobbies)
+                    // this.viewallLoading = false;
                 } else {
-                    this.$notify({type: 'error', text: 'Could not fetch hobbies. Try reloading this page'});
+                    // this.$notify({type: 'error', text: 'Could not fetch hobbies. Try reloading this page'});
                 }
-                this.viewallLoading = false;
-                console.log(this.viewallLoading);
+                // this.viewallLoading = false;
+                // console.log(this.viewallLoading);
             }).catch(error => {
-                this.viewallLoading = false;
-                this.$notify({type: 'error', text: 'Could not fetch hobbies. Please try again'});
+                // this.viewallLoading = false;
+                // this.$notify({type: 'error', text: 'Could not fetch hobbies. Please try again'});
             })
         },
-        getAuthUser(){
+        fetchAllCategories: async function () {
+            // this.viewallLoading = true;
+            axios.get(apiDomain + '/hobby/categories').then(response => {
+                let $_response = response.data;
+                if ($_response.status === 0) {
+                    this.categories = $_response.data;
+                    // this.viewallLoading = false;
+                } else {
+                    // this.$notify({type: 'error', text: 'Could not fetch categories. Try reloading this page'});
+                }
+                // this.viewallLoading = false;
+                // console.log(this.viewallLoading);
+            }).catch(error => {
+                // this.viewallLoading = false;
+                // this.$notify({type: 'error', text: 'Could not fetch categories. Please try again'});
+            })
+        },
+        getAuthUser: async function() {
             axios.get(apiDomain + '/auth-user').then(response => {
             let $_response = response.data;
                 if ($_response) {
                     this.user = JSON.parse($_response.data);
-                    console.log(this.user);
                 }
             }).catch(error => {
-                this.$notify({type: 'error', text: 'No authenticated user found.'});
+                // this.$notify({type: 'error', text: 'No authenticated user found.'});
             })
         },
         deleteHobby(hobby){
-            axios.delete(apiDomain + '/hobby/delete',  hobby).then(response => {
+            axios.delete(apiDomain + '/hobby/delete/'+ hobby.id).then(response => {
                 let $_response = response.data;
                 console.log($_response);
                 if ($_response.status === 0) {
                     this.$notify({type: 'success', text: 'Hobby has been deleted successfully'});
-                    this.fetchAllBooks();
+                    this.fetchAllHobbies();
+                    this.viewallLoading = false;
                 } else {
-                    this.$notify({type: 'error', text: 'Could not delete hobby. Try reloading this page'});
+                    this.viewallLoading = false;
+                    // this.$notify({type: 'error', text: 'Could not delete hobby. Try reloading this page'});
                 }
-                this.viewallLoading = false;
             }).catch(error => {
                 this.viewallLoading = false;
                 this.$notify({type: 'error', text: 'Could not delete hobby. Please try again'});
             })
         }
     },
-    mounted(){
-        this.fetchAllHobbies();
-        this.getAuthUser();
+    async mounted(){
+        await this.fetchAllHobbies();
+        await this.getAuthUser();
+        await this.fetchAllCategories();
+        this.viewallLoading = false;
     },
     components:{},
     props:[]
