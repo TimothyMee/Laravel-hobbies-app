@@ -30,6 +30,6 @@ All contributions are welcomed and can be made in form of pull requests
 If you discover a security vulnerability within RMS, please send an e-mail to Fadayini Timothy at timothy33.tf@gmail.com 
 
 # License
-Book test app is open-sourced software licensed under the MIT license.
+Laravel-Hobbies test app is open-sourced software licensed under the MIT license.
 
 
