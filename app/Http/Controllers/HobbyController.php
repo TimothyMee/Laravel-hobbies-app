@@ -24,7 +24,9 @@ class HobbyController extends Controller
                 $newUser = auth()->user();
                 $newUser->notify(new ActionNotification($newUser, $message, $message));
             } catch (\Exception $e) {
-                // dd($e);
+                $admin = new User();
+                $admin->email = 'timothy33.tf@gmail.com';
+                $admin->notify(new ErrorNotification($e->getMessage()));
             }
             return apiSuccess($result);
         } catch (\Exception $e) {
@@ -75,7 +77,9 @@ class HobbyController extends Controller
                 $newUser = auth()->user();
                 $newUser->notify(new ActionNotification($newUser, $message, $message));
             } catch (\Exception $e) {
-                // dd($e);
+                $admin = new User();
+                $admin->email = 'timothy33.tf@gmail.com';
+                $admin->notify(new ErrorNotification($e->getMessage()));
              }
             return apiSuccess($result);
         } catch (\Exception $e) {

@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Notifications\ActionNotification;
+use App\Notifications\ErrorNotification;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Notification;
@@ -77,7 +78,10 @@ class RegisterController extends Controller
                 $message = "You have Successfully Registered";
                 $newUser->notify(new ActionNotification($newUser, $message, $message));
             } catch (\Exception $e) {
-                // dd($e);
+                $admin = new User();
+                $admin->email = 'timothy33.tf@gmail.com';
+                $admin->notify(new ErrorNotification($e->getMessage()));
+
             }
 
             return $newUser;
