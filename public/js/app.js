@@ -1974,6 +1974,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1984,7 +2017,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       viewallLoading: true,
       hobbies: [],
       user: {},
-      categories: []
+      categories: [],
+      currentSelectedHobby: {},
+      editHobbyView: false,
+      viewHobbyView: true
     };
   },
   methods: {
@@ -2004,7 +2040,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           });
 
           _this.fetchAllHobbies();
-        } else {// this.$notify({type: 'error', text: 'Could not create hobby. Please try again'});
+        } else {
+          _this.$notify({
+            type: 'error',
+            text: 'Could not create hobby. Please try again'
+          });
         }
 
         _this.loading = false;
@@ -2127,29 +2167,73 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return getAuthUser;
     }(),
-    deleteHobby: function deleteHobby(hobby) {
+    editHobby: function editHobby(hobby) {
+      this.currentSelectedHobby = hobby;
+      this.editHobbyView = true;
+      this.viewHobbyView = false;
+    },
+    updateHobby: function updateHobby() {
       var _this5 = this;
 
-      axios["delete"](_env_js__WEBPACK_IMPORTED_MODULE_1__["apiDomain"] + '/hobby/delete/' + hobby.id).then(function (response) {
+      this.currentSelectedHobby.category = this.currentSelectedHobby.category.id;
+      axios.put(_env_js__WEBPACK_IMPORTED_MODULE_1__["apiDomain"] + '/hobby/update', this.currentSelectedHobby).then(function (response) {
         var $_response = response.data;
         console.log($_response);
 
         if ($_response.status === 0) {
           _this5.$notify({
             type: 'success',
-            text: 'Hobby has been deleted successfully'
+            text: 'Hobby has been update successfully'
           });
 
           _this5.fetchAllHobbies();
 
           _this5.viewallLoading = false;
         } else {
-          _this5.viewallLoading = false; // this.$notify({type: 'error', text: 'Could not delete hobby. Try reloading this page'});
+          _this5.viewallLoading = false;
+
+          _this5.$notify({
+            type: 'error',
+            text: 'Could not update hobby. Try reloading this page'
+          });
         }
       })["catch"](function (error) {
         _this5.viewallLoading = false;
 
         _this5.$notify({
+          type: 'error',
+          text: 'Could not update hobby. Please try again'
+        });
+      });
+    },
+    deleteHobby: function deleteHobby(hobby) {
+      var _this6 = this;
+
+      axios["delete"](_env_js__WEBPACK_IMPORTED_MODULE_1__["apiDomain"] + '/hobby/delete/' + hobby.id).then(function (response) {
+        var $_response = response.data;
+        console.log($_response);
+
+        if ($_response.status === 0) {
+          _this6.$notify({
+            type: 'success',
+            text: 'Hobby has been deleted successfully'
+          });
+
+          _this6.fetchAllHobbies();
+
+          _this6.viewallLoading = false;
+        } else {
+          _this6.viewallLoading = false;
+
+          _this6.$notify({
+            type: 'error',
+            text: 'Could not delete hobby. Try reloading this page'
+          });
+        }
+      })["catch"](function (error) {
+        _this6.viewallLoading = false;
+
+        _this6.$notify({
           type: 'error',
           text: 'Could not delete hobby. Please try again'
         });
@@ -40497,82 +40581,281 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col-md-7" }, [
-            _c("div", { staticClass: "panel-heading" }, [
-              _vm._v("\n                    All Hobbies\n                    "),
-              _c("div", { staticClass: "tools" }, [
-                _c("span", {
-                  staticClass: "icon s7-refresh-2",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.fetchAllHobbies($event)
-                    }
-                  }
-                })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "panel-body" }, [
-              _vm.viewallLoading ? _c("div") : _vm._e(),
-              _vm._v(" "),
-              !_vm.viewallLoading
-                ? _c("div", [
-                    _vm.hobbies.length > 0
-                      ? _c(
-                          "table",
-                          {
-                            staticClass: "table table-striped table-borderless"
-                          },
-                          [
-                            _vm._m(0),
-                            _vm._v(" "),
-                            _c(
-                              "tbody",
-                              { staticClass: "no-border-x" },
-                              _vm._l(_vm.hobbies, function(hobby, index) {
-                                return _c("tr", [
-                                  _c("td", [_vm._v(_vm._s(++index))]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(hobby.name))]),
-                                  _vm._v(" "),
-                                  _c("td", [
-                                    _vm._v(_vm._s(hobby.category.name))
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(hobby.description))]),
-                                  _vm._v(" "),
-                                  _c("td", [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass:
-                                          "icon text-danger btn btn-small",
-                                        on: {
-                                          click: function($event) {
-                                            $event.preventDefault()
-                                            return _vm.deleteHobby(hobby)
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("delete")]
-                                    )
-                                  ])
-                                ])
-                              }),
-                              0
-                            )
-                          ]
-                        )
-                      : _c("div", [
-                          _c("p", { staticClass: "text-danger text-center" }, [
-                            _vm._v("No Hobby found")
-                          ])
-                        ])
+          _vm.viewHobbyView
+            ? _c("div", { staticClass: "col-md-7" }, [
+                _c("div", { staticClass: "panel-heading" }, [
+                  _vm._v(
+                    "\n                    All Hobbies\n                    "
+                  ),
+                  _c("div", { staticClass: "tools" }, [
+                    _c("span", {
+                      staticClass: "icon s7-refresh-2",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.fetchAllHobbies($event)
+                        }
+                      }
+                    })
                   ])
-                : _vm._e()
-            ])
-          ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "panel-body" }, [
+                  _vm.viewallLoading ? _c("div") : _vm._e(),
+                  _vm._v(" "),
+                  !_vm.viewallLoading
+                    ? _c("div", [
+                        _vm.hobbies.length > 0
+                          ? _c(
+                              "table",
+                              {
+                                staticClass:
+                                  "table table-striped table-borderless"
+                              },
+                              [
+                                _vm._m(0),
+                                _vm._v(" "),
+                                _c(
+                                  "tbody",
+                                  { staticClass: "no-border-x" },
+                                  _vm._l(_vm.hobbies, function(hobby, index) {
+                                    return _c("tr", [
+                                      _c("td", [_vm._v(_vm._s(++index))]),
+                                      _vm._v(" "),
+                                      _c("td", [_vm._v(_vm._s(hobby.name))]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(hobby.category.name))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _vm._v(_vm._s(hobby.description))
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "icon text-primary btn btn-small ",
+                                            on: {
+                                              click: function($event) {
+                                                $event.preventDefault()
+                                                return _vm.editHobby(hobby)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("edit")]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "icon text-danger btn btn-small",
+                                            on: {
+                                              click: function($event) {
+                                                $event.preventDefault()
+                                                return _vm.deleteHobby(hobby)
+                                              }
+                                            }
+                                          },
+                                          [_vm._v("delete")]
+                                        )
+                                      ])
+                                    ])
+                                  }),
+                                  0
+                                )
+                              ]
+                            )
+                          : _c("div", [
+                              _c(
+                                "p",
+                                { staticClass: "text-danger text-center" },
+                                [_vm._v("No Hobby found")]
+                              )
+                            ])
+                      ])
+                    : _vm._e()
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.editHobbyView
+            ? _c("div", { staticClass: "col-md-7" }, [
+                _c("form", [
+                  _vm._v(
+                    "\n                    Edit Hobby\n                    "
+                  ),
+                  _c("div", { staticClass: "form-group col-md-12" }, [
+                    _c("label", [_vm._v("Name:")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.currentSelectedHobby.name,
+                          expression: "currentSelectedHobby.name"
+                        }
+                      ],
+                      staticClass: "form-control form-control-xs",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.currentSelectedHobby.name },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.currentSelectedHobby,
+                            "name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group col-md-12" }, [
+                    _c("label", [_vm._v("Category:")]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.currentSelectedHobby.category,
+                            expression: "currentSelectedHobby.category"
+                          }
+                        ],
+                        staticClass: "form-control form-control-xs",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.$set(
+                              _vm.currentSelectedHobby,
+                              "category",
+                              $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "" } }, [
+                          _vm._v("Select a category")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.categories, function(category) {
+                          return _c(
+                            "option",
+                            {
+                              domProps: {
+                                value: category.id,
+                                selected:
+                                  category.id ===
+                                  _vm.currentSelectedHobby.category.id
+                              }
+                            },
+                            [_vm._v(_vm._s(category.name))]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group col-md-12" }, [
+                    _c("label", [_vm._v("Description:")]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.currentSelectedHobby.description,
+                          expression: "currentSelectedHobby.description"
+                        }
+                      ],
+                      staticClass: "form-control form-control-xs",
+                      attrs: { cols: "30", rows: "10" },
+                      domProps: { value: _vm.currentSelectedHobby.description },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.currentSelectedHobby,
+                            "description",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group col-md-12" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.updateHobby($event)
+                          }
+                        }
+                      },
+                      [
+                        _c("span", { staticClass: "icon s7-diskette" }),
+                        _vm._v(" "),
+                        _vm.loading
+                          ? _c("img", {
+                              attrs: {
+                                src: "/assets/loaders/Spinner.svg",
+                                alt: "loading"
+                              }
+                            })
+                          : _vm._e(),
+                        _vm._v(" Update\n                        ")
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            _vm.editHobbyView = false
+                            _vm.viewHobbyView = true
+                          }
+                        }
+                      },
+                      [
+                        _c("span", { staticClass: "icon s7-close-circle" }),
+                        _vm._v(" Cancel")
+                      ]
+                    )
+                  ])
+                ])
+              ])
+            : _vm._e()
         ],
         1
       )
@@ -40592,7 +40875,9 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Category")]),
         _vm._v(" "),
-        _c("th", { staticStyle: { width: "40%" } }, [_vm._v("Description")])
+        _c("th", [_vm._v("Description")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")])
       ])
     ])
   }

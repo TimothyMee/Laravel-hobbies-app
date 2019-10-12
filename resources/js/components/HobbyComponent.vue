@@ -33,7 +33,7 @@
                     </form>
                 </div>
 
-                <div class="col-md-7">
+                <div class="col-md-7" v-if="viewHobbyView">
                     <div class="panel-heading">
                         All Hobbies
                         <div class="tools">
@@ -53,7 +53,8 @@
                                         <th>#</th>
                                         <th>Name</th>
                                         <th>Category</th>
-                                        <th style="width:40%;">Description</th>
+                                        <th>Description</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody class="no-border-x">
@@ -63,6 +64,7 @@
                                         <td>{{hobby.category.name}}</td>
                                         <td>{{hobby.description}}</td>
                                         <td>
+                                            <button class="icon text-primary btn btn-small " @click.prevent="editHobby(hobby)">edit</button>
                                             <button class="icon text-danger btn btn-small" @click.prevent="deleteHobby(hobby)">delete</button>
                                         </td>
                                     </tr>
@@ -73,6 +75,37 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="col-md-7" v-if="editHobbyView">
+                    <form>
+                        Edit Hobby
+                        <div class="form-group col-md-12">
+                            <label>Name:</label>
+                            <input type="text" class="form-control form-control-xs" v-model="currentSelectedHobby.name">
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label>Category:</label>
+                            <select v-model="currentSelectedHobby.category" class="form-control form-control-xs">
+                                <option value="">Select a category</option>
+                                <option v-for="category in categories" :value="category.id" :selected="category.id === currentSelectedHobby.category.id">{{category.name}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <label>Description:</label>
+                            <textarea v-model="currentSelectedHobby.description" cols="30" rows="10" class="form-control form-control-xs"></textarea>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                            <button class="btn btn-primary" type="submit" @click.prevent="updateHobby">
+                                <span class="icon s7-diskette"></span>
+                                <img src="/assets/loaders/Spinner.svg" alt="loading" v-if="loading"> Update
+                            </button>
+                            <button class="btn btn-danger" @click.prevent="editHobbyView = false; viewHobbyView = true"><span class="icon s7-close-circle"></span> Cancel</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -89,7 +122,10 @@ export default {
             viewallLoading: true,
             hobbies:[],
             user:{},
-            categories:[]
+            categories:[],
+            currentSelectedHobby:{},
+            editHobbyView:false,
+            viewHobbyView:true
         }
     },
 
@@ -104,7 +140,7 @@ export default {
                     this.$notify({type: 'success', text: 'Hobby has been added successfully'});
                     this.fetchAllHobbies();
                 } else {
-                    // this.$notify({type: 'error', text: 'Could not create hobby. Please try again'});
+                    this.$notify({type: 'error', text: 'Could not create hobby. Please try again'});
                 }
                 this.loading = false;
             }).catch(error => {
@@ -157,6 +193,29 @@ export default {
                 // this.$notify({type: 'error', text: 'No authenticated user found.'});
             })
         },
+        editHobby(hobby){
+            this.currentSelectedHobby = hobby;
+            this.editHobbyView = true;
+            this.viewHobbyView = false;
+        },
+        updateHobby(){
+            this.currentSelectedHobby.category = this.currentSelectedHobby.category.id;
+            axios.put(apiDomain + '/hobby/update', this.currentSelectedHobby).then(response => {
+                let $_response = response.data;
+                console.log($_response);
+                if ($_response.status === 0) {
+                    this.$notify({type: 'success', text: 'Hobby has been update successfully'});
+                    this.fetchAllHobbies();
+                    this.viewallLoading = false;
+                } else {
+                    this.viewallLoading = false;
+                    this.$notify({type: 'error', text: 'Could not update hobby. Try reloading this page'});
+                }
+            }).catch(error => {
+                this.viewallLoading = false;
+                this.$notify({type: 'error', text: 'Could not update hobby. Please try again'});
+            })
+        },
         deleteHobby(hobby){
             axios.delete(apiDomain + '/hobby/delete/'+ hobby.id).then(response => {
                 let $_response = response.data;
@@ -167,7 +226,7 @@ export default {
                     this.viewallLoading = false;
                 } else {
                     this.viewallLoading = false;
-                    // this.$notify({type: 'error', text: 'Could not delete hobby. Try reloading this page'});
+                    this.$notify({type: 'error', text: 'Could not delete hobby. Try reloading this page'});
                 }
             }).catch(error => {
                 this.viewallLoading = false;

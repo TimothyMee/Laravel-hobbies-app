@@ -51,7 +51,10 @@ class Hobby extends Model
     public function updateOne($data)
     {
         return $this->where('id', $data['id'])
-                    ->fill($data)
-                    ->save();
+                    ->update([
+                        'name' => $data['name'],
+                        'category' => $data['category'],
+                        'description' => $data['description']
+                    ]);
     }
 }

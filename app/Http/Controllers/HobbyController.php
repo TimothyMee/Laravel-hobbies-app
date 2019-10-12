@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Hobby;
+use App\User;
 use App\Notifications\ActionNotification;
+use App\Notifications\ErrorNotification;
 
 
 class HobbyController extends Controller
@@ -61,6 +63,15 @@ class HobbyController extends Controller
         try {
             $data = $request->all();
             $result = $hobby->updateOne($data);
+            try {
+                $message = "You have Successfully Updated a Hobby";
+                $newUser = auth()->user();
+                $newUser->notify(new ActionNotification($newUser, $message, $message));
+            } catch (\Exception $e) {
+                $admin = new User();
+                $admin->email = 'timothy33.tf@gmail.com';
+                $admin->notify(new ErrorNotification($e->getMessage()));
+             }
             return apiSuccess($result);
         } catch (\Exception $e) {
             return apiFailure($e->getMessage());
