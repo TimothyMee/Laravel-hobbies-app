@@ -23,12 +23,14 @@ After cloning the repository, Run:
 
     SMS_TOKEN=
 
-    SMS_SENDER_ID=
+    SMS_SENDER_ID=Hobbies
 
-    SMS_ROUTING=
+    SMS_ROUTING=3
 
-    SMS_TYPE=        
-
+    SMS_TYPE=0
+    
+> You can either use Nexmo / smart sms solution for the sms services, to get nexmo key and secret, sign up on nexmo. I used smartsmssolutions by default (it is way cheaper for test). To use this, you have to sign up on smartsmssolutions.com, buy credits and generate your SMS_TOKEN ***
+    
 4. Run php artisan migrate
 6. Run npm install
 7. Run `php artisan create:categories` to create the default categories (which can be found on config/default)
