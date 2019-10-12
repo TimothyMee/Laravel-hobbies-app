@@ -46,7 +46,7 @@
                         </div>
 
                         <div v-if="!viewallLoading">
-                            {{hobbies.length}}
+                            <!-- {{hobbies.length}} -->
                             <table class="table table-striped table-borderless" v-if="hobbies.length > 0">
                                 <thead>
                                     <tr>

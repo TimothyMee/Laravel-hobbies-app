@@ -31,7 +31,7 @@ class Hobby extends Model
 
     public function viewAll()
     {
-        return $this->with(['category', 'user'])->get();
+        return $this->where('user_id', auth()->id())->with(['category', 'user'])->get();
     }
 
     public function viewOne($data)
